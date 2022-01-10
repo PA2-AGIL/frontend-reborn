@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import React from 'react';
 import { Input } from '../components/form';
 import Header from '../components/header';
@@ -27,7 +28,7 @@ const Entrar = () => {
       <Header />
       <div className="flex justify-around">
         <div className="w-full max-w-lg">
-          <form className="px-8 pt-6 pb-8 mb-4">
+          <form className="px-8 pt-6 pb-8 mb-4 mt-10">
             <Input
               name="Email"
               placeholder="teste@teste.com"
@@ -60,6 +61,15 @@ const Entrar = () => {
               </a>
             </div>
           </form>
+        </div>
+        <div className="w-full max-w-lg hidden md:block">
+          <Image
+            src="/register.svg"
+            width="100%"
+            height="100%"
+            layout="responsive"
+            objectFit="contain"
+          />
         </div>
       </div>
     </>

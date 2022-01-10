@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import React from 'react';
 import { Input } from '../components/form';
 import Header from '../components/header';
@@ -39,7 +40,7 @@ const Cadastrar = () => {
       <Header />
       <div className="flex justify-around">
         <div className="w-full max-w-lg">
-          <form className="px-8 pt-6 pb-8 mb-4">
+          <form className="px-8 pt-6 pb-8 mb-4 mt-10">
             <Input
               value={name}
               setValue={setName}
@@ -89,7 +90,7 @@ const Cadastrar = () => {
                 type="button"
                 onClick={() => checkError()}
               >
-                Entrar
+                Cadastrar
               </button>
               <a
                 className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600"
@@ -99,6 +100,15 @@ const Cadastrar = () => {
               </a>
             </div>
           </form>
+        </div>
+        <div className="w-full max-w-lg hidden md:block">
+          <Image
+            src="/register.svg"
+            width="100%"
+            height="100%"
+            layout="responsive"
+            objectFit="contain"
+          />
         </div>
       </div>
     </>
