@@ -11,7 +11,7 @@ export const Input: React.FC<{
   return (
     <div className="mb-4">
       <label
-        className="block text-gray-700 text-sm font-bold mb-2"
+        className="block text-sm font-bold mb-2 text-teal-500"
         htmlFor="email"
       >
         {name}
