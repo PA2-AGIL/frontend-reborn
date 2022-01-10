@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-5">
       <div>
-        <Link href="#">
+        <Link href="/">
           <a className="flex items-center text-white font-bold">
             <AdjustmentsIcon className="w-8  h-8 mr-2" />
             <p>AGIL</p>
