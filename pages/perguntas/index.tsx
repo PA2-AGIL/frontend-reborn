@@ -17,7 +17,7 @@ const index = () => {
       <main className="h-full">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl m-5 text-teal-500 font-bold">Perguntas</h1>
-          <Link href={'#'}>
+          <Link href={'/perguntas/nova'}>
             <h1 className="text-md font-semibold my-3 mx-5 py-2 px-5 border rounded bg-teal-500 text-white hover:cursor-pointer">
               Nova Pergunta
             </h1>
