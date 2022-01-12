@@ -1,13 +1,17 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import Head from 'next/head';
+import Router from 'next/router';
 import React from 'react';
 import Footer from '../../components/footer';
 import { Input } from '../../components/form';
 import Header from '../../components/header';
+import { private_api } from '../api/axios';
 
 const NewQuestion = () => {
+  const [loading, setLoading] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [tag, setTag] = React.useState('AQUICULTOR');
   const [files, setFiles] = React.useState<any>([]);
 
   const [errors, setErrors] = React.useState<any>({});
@@ -20,6 +24,33 @@ const NewQuestion = () => {
       errs.description = 'Descrição inválida';
 
     setErrors(errs);
+
+    return errs;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!!Object.keys(checkError()).length) return;
+
+    const body = new FormData();
+    body.append('title', title);
+    body.append('content', description);
+    body.append('tags[]', tag);
+
+    if (!!files.length) {
+      files.forEach((file: any) => {
+        body.append('files', file);
+      });
+    }
+    try {
+      setLoading(false);
+      await private_api.post(`/question/`, body);
+      Router.push('/perguntas');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -30,7 +61,12 @@ const NewQuestion = () => {
       <Header />
       <main className="h-full flex justify-around">
         <div className="w-full max-w-lg">
-          <form className="px-8 pt-6 pb-8 mb-4 mt-10">
+          <form
+            className="px-8 pt-6 pb-8 mb-4 mt-10"
+            onSubmit={(e: React.FormEvent) => {
+              handleSubmit(e);
+            }}
+          >
             <Input
               name="Titulo"
               placeholder="Pergunta 01"
@@ -46,6 +82,48 @@ const NewQuestion = () => {
               error={errors.description}
               type="textarea"
             />
+            <label
+              className="block text-sm font-bold mb-2 text-teal-500"
+              htmlFor="email"
+            >
+              Tag
+            </label>
+            <select
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              className="
+                appearance-none
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-500
+                bg-white
+                bg-clip-padding
+                bg-no-repeat
+                border border-solid
+                border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                mb-3
+                focus:text-teal-700
+                focus:bg-white
+                focus:border-teal-500
+                focus:outline-none"
+            >
+              <option>AQUICULTOR</option>
+              <option>APICULTOR</option>
+              <option>AVICULTOR</option>
+              <option>AGRONOMO</option>
+              <option>ENGENHEIRO FLORESTAL</option>
+              <option>PECUARISTA</option>
+              <option>VETERINÁRIO</option>
+              <option>ZOOTÉCNICO</option>
+            </select>
 
             <label
               className="block text-sm font-bold mb-2 text-teal-500"
@@ -75,8 +153,7 @@ const NewQuestion = () => {
             <div className="flex items-center justify-between">
               <button
                 className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={() => checkError()}
+                type="submit"
               >
                 Criar Pergunta
               </button>

@@ -98,6 +98,18 @@ const PerguntaId = () => {
                   );
                 })}
               </div>
+              <div className="ml-5">
+                {question.tags?.map((tag: string, i: number) => {
+                  return (
+                    <span
+                      key={tag + i}
+                      className="bg-teal-900 text-white rounded mb-1 mr-1 p-1 text-xs"
+                    >
+                      {tag}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
