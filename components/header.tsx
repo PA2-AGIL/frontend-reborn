@@ -20,7 +20,7 @@ const Header = () => {
       {accessToken ? (
         <div>
           <Link href={'#'}>
-            <a className="text-teal-500 border-2 border-transparent rounded-lg hover:text-white hover:bg-transparent hover:border-white px-4 py-2 mx-2 bg-white h-5 font-bold">
+            <a className="border-2 border-transparent rounded-lg text-white bg-transparent hover:border-white px-4 py-2 mx-2 bg-white h-5 font-bold">
               {parseJwt(accessToken).email}
             </a>
           </Link>
