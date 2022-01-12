@@ -4,10 +4,9 @@ import React from 'react';
 const AnswerCard: React.FC<{
   title: string;
   description: string;
-  author: string;
   date: string;
   rate?: number;
-}> = ({ title, description, author, date, rate = 0 }) => {
+}> = ({ title, description, date, rate = 0 }) => {
   return (
     <div className="shadow border rounded p-2 flex my-5 text-teal-500">
       <div className="text-center p-3">
@@ -27,7 +26,7 @@ const AnswerCard: React.FC<{
           <p>{description}</p>
         </div>
         <p className="text-teal-800 text-right p-3">
-          {author} - {new Date(date).toLocaleDateString('pt-br')}
+          {new Date(date).toLocaleDateString('pt-br')}
         </p>
       </div>
     </div>
