@@ -1,10 +1,13 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Router from 'next/router';
 import React from 'react';
 import { Input } from '../components/form';
 import Header from '../components/header';
+import { public_api } from './api/axios';
 
 const Cadastrar = () => {
+  const [loading, setLoading] = React.useState(false);
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -30,6 +33,35 @@ const Cadastrar = () => {
       errs.address = 'Endereço inválido';
 
     setErrors(errs);
+
+    return errs;
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!!Object.keys(checkError()).length) {
+      return;
+    }
+
+    try {
+      setLoading(false);
+
+      const { data } = await public_api.post('/auth/signup/producer', {
+        name,
+        email,
+        password,
+        phone,
+        address,
+      });
+
+      console.log(data);
+
+      Router.push('/entrar');
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +72,12 @@ const Cadastrar = () => {
       <Header />
       <div className="flex justify-around">
         <div className="w-full max-w-lg">
-          <form className="px-8 pt-6 pb-8 mb-4 mt-10">
+          <form
+            className="px-8 pt-6 pb-8 mb-4 mt-10"
+            onSubmit={(e: React.FormEvent) => {
+              handleRegister(e);
+            }}
+          >
             <Input
               value={name}
               setValue={setName}
@@ -59,6 +96,7 @@ const Cadastrar = () => {
               value={password}
               setValue={setPassword}
               name="Senha"
+              type="password"
               placeholder="********"
               error={errors.password}
             />
@@ -66,6 +104,7 @@ const Cadastrar = () => {
               value={password2}
               setValue={setPassword2}
               name="Confirmar Senha"
+              type="password"
               placeholder="********"
               error={errors.password2}
             />
@@ -87,17 +126,10 @@ const Cadastrar = () => {
             <div className="flex items-center justify-between">
               <button
                 className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={() => checkError()}
+                type="submit"
               >
                 Cadastrar
               </button>
-              <a
-                className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600"
-                href="#"
-              >
-                Esqueceu a senha?
-              </a>
             </div>
           </form>
         </div>
