@@ -4,9 +4,22 @@ import React from 'react';
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 import QuestionCard from '../../components/questionCard';
+import { private_api } from '../api/axios';
 
 const index = () => {
-  const [questions, setQuestions] = React.useState([1, 2, 3, 4, 5]);
+  const [questions, setQuestions] = React.useState([]);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await private_api.get('/question/all');
+        console.log(data);
+        setQuestions(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   return (
     <div className="h-screen flex flex-col justify-between">
@@ -24,24 +37,51 @@ const index = () => {
           </Link>
         </div>
         <div>
-          {questions.map((question) => {
-            return (
-              <QuestionCard
-                id="asdasda"
-                title="teste 01"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia magni corporis nulla, dolores aut itaque aperiam cum reprehenderit consequatur similique!"
-                rate={1}
-                tags={['teste01', 'teste02']}
-                date="2011-08-12T20:17:46.384Z"
-                answers={20}
-              />
-            );
-          })}
+          {questions?.map(
+            ({
+              _id,
+              title,
+              content,
+              likes,
+              dislike,
+              tags,
+              createdAt,
+              answers,
+            }: IQuestion) => {
+              return (
+                <QuestionCard
+                  key={_id}
+                  id={_id}
+                  title={title}
+                  description={content}
+                  rate={Number(likes - dislike)}
+                  tags={tags}
+                  date={createdAt}
+                  answers={answers.length}
+                />
+              );
+            }
+          )}
         </div>
       </main>
       <Footer />
     </div>
   );
 };
+
+interface IQuestion {
+  _id: string;
+  title: string;
+  content: string;
+  closed: boolean;
+  createdAt: string;
+  updatedAt: string;
+  likes: number;
+  dislike: number;
+  answers: any[];
+  images: string[];
+  tags: string[];
+  producer: any;
+}
 
 export default index;
