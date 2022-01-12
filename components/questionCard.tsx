@@ -12,7 +12,7 @@ const QuestionCard: React.FC<{
 }> = ({ id, title, description, rate = 0, answers = 0, tags, date }) => {
   return (
     <Link href={`perguntas/${id}`}>
-      <div className="flex m-5 bg-teal-500 rounded text-gray-50 drop-shadow-sm hover:cursor-pointer">
+      <div className="shadow border rounded p-2 flex m-5 text-teal-500 hover:cursor-pointer">
         <div className="text-center p-2">
           <div>
             <p>{rate}</p>
@@ -31,9 +31,12 @@ const QuestionCard: React.FC<{
           </div>
           <div className="pb-2 flex justify-between">
             <div className="flex flex-wrap">
-              {tags.map((tag: string) => {
+              {tags.map((tag: string, i: number) => {
                 return (
-                  <span className="bg-teal-900 text-white rounded mb-1 mr-1 p-1 text-xs">
+                  <span
+                    key={tag + i}
+                    className="bg-teal-900 text-white rounded mb-1 mr-1 p-1 text-xs"
+                  >
                     {tag}
                   </span>
                 );
