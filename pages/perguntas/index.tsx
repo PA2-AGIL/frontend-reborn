@@ -6,15 +6,15 @@ import Header from '../../components/header';
 import QuestionCard from '../../components/questionCard';
 
 const index = () => {
-  const [questions, setQuestions] = React.useState([1]);
+  const [questions, setQuestions] = React.useState([1, 2, 3, 4, 5]);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col justify-between">
       <Head>
         <title>Perguntas</title>
       </Head>
       <Header />
-      <main className="h-full">
+      <main>
         <div className="flex justify-between items-center">
           <h1 className="text-2xl m-5 text-teal-500 font-bold">Perguntas</h1>
           <Link href={'/perguntas/nova'}>
