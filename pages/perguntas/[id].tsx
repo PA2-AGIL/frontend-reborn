@@ -33,6 +33,28 @@ const PerguntaId = () => {
     }
   };
 
+  const like = async () => {
+    try {
+      const { data } = await private_api.patch(`/question/like/${id}`);
+      if (!!data) {
+        setReload(!reload);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const dislike = async () => {
+    try {
+      const { data } = await private_api.patch(`/question/dislike/${id}`);
+      if (!!data) {
+        setReload(!reload);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   React.useEffect(() => {
     if (!id) return;
 
@@ -61,14 +83,14 @@ const PerguntaId = () => {
             <div className="text-center">
               <ThumbUpIcon
                 className="w-10 text-teal-500 hover:cursor-pointer"
-                onClick={() => {}}
+                onClick={() => like()}
               />
-              <p className="my-2">
-                {Number(question.likes - question.dislike)}
+              <p className="my-2 text-teal-500">
+                {String(question.likes - question.dislike)}
               </p>
               <ThumbDownIcon
                 className="w-10 text-rose-500 hover:cursor-pointer"
-                onClick={() => {}}
+                onClick={() => dislike()}
               />
             </div>
             <div className="grow">
@@ -88,13 +110,13 @@ const PerguntaId = () => {
               <div className="flex flex-wrap">
                 {question.images?.map((image: any, i: number) => {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       <Link href={image} key={i}>
                         <a target="_blank" className="w-2/4 md:w-1/4 p-5">
                           <img src={image} className="shadow border rounded " />
                         </a>
                       </Link>
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </div>
@@ -137,7 +159,7 @@ const PerguntaId = () => {
 
           <Input
             name="Sua resposta"
-            placeholder="asdas"
+            placeholder="Resposta"
             type="textarea"
             value={answer}
             setValue={setAnswer}
