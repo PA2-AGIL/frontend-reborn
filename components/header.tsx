@@ -7,12 +7,15 @@ const Header = () => {
   const { accessToken, logout } = React.useContext(UserContext);
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-5">
+    <nav className="flex items-center justify-between flex-wrap p-5 mx-10">
       <div>
         <Link href={accessToken ? '/perguntas' : '/'}>
-          <a className="flex items-center text-white font-bold">
-            <AdjustmentsIcon className="w-8  h-8 mr-2" />
-            <p>AGIL</p>
+          <a className="flex items-center text-black font-bold">
+            <h2 className="text-2xl" >Ágil </h2>
+            <svg width="38" height="32" viewBox="0 0 38 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 30.5C10 34.5 10.5 6.49999 29.5 7.99997" stroke="black" stroke-width="1.75" stroke-linecap="round"/>
+              <path d="M4 27C7.5 23.5 4 15.5 10.5 8.00004C17 0.500049 39 1.00005 36 3.00005C33 5.00004 34.5 18.5 23.5 25C12.5 31.5 14 24 10.5 27" stroke="black" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
           </a>
         </Link>
       </div>
@@ -34,14 +37,14 @@ const Header = () => {
       ) : (
         <div>
           <Link href={'/entrar'}>
-            <a className="text-teal-500 border-2 border-transparent rounded-lg hover:text-white hover:bg-transparent hover:border-white px-4 py-2 mx-2 bg-white h-5 font-bold">
+            <button className="text-gray rounded-lg px-4 py-1 mx-2 bg-transparent font-light text-2xl hover:font-medium">
               Entrar
-            </a>
+            </button>
           </Link>
           <Link href={'/cadastrar'}>
-            <a className="text-teal-500 border-2 border-transparent rounded-lg hover:text-white hover:bg-transparent hover:border-white px-4 py-2 mx-2 bg-white h-5 font-bold">
+            <button className="text-white rounded-lg px-3 py-1 mx-2 bg-gray font-medium text-xl hover:text-white hover:bg-transparent hover:border-white">
               Registrar
-            </a>
+            </button>
           </Link>
         </div>
       )}
