@@ -1,13 +1,13 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 import router from 'next/router';
-import React from 'react';
-import { Input } from '../components/form';
-import { UserContext } from '../context/userContext';
-import { public_api } from './api/axios';
+import { Input } from "../components/form";
+import { UserContext } from "../context/userContext";
+import { public_api } from "./api/axios";
 
-const Entrar = () => {
+export default function EntrarEspecialista() {
   const { login } = React.useContext(UserContext);
   const [loading, setLoading] = React.useState(false);
   const [email, setEmail] = React.useState('');
@@ -35,7 +35,7 @@ const Entrar = () => {
     }
     try {
       setLoading(true);
-      const { data } = await public_api.post('/auth/signin/producer', {
+      const { data } = await public_api.post('/auth/signin/expert', {
         email,
         password,
       });
@@ -54,7 +54,7 @@ const Entrar = () => {
   return (
     <div className="w-full h-screen bg-primary-lighteen">
       <Head>
-        <title>Entrar</title>
+        <title>Entrar | Especialista</title>
       </Head>
       <div className="w-full h-full m-0">
         <div className="flex w-full h-full justify-between">
@@ -72,7 +72,7 @@ const Entrar = () => {
                 </a>
               </Link>
               <div className="my-28">
-                <h2 className="text-white text-3xl my-10">Entrar</h2>
+                <h2 className="text-white text-3xl my-10">Entrar como Especialista</h2>
                 <form
                   onSubmit={(e: React.FormEvent) => {
                     handleLogin(e);
@@ -114,11 +114,11 @@ const Entrar = () => {
                         Não possuí uma conta?
                       </a>
                     </Link>
-                    <Link href={'/entrarEspecialista'}>
+                    <Link href={'/entrar'}>
                       <a
                         className="inline-block align-baseline font-bold text-xl mt-10 text-secondary-lighteen"
                       >
-                        Entrar como um Especialista
+                        Entrar como um Produtor
                       </a>
                     </Link>
                   </div>
@@ -141,7 +141,5 @@ const Entrar = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-export default Entrar;
+  )
+}
