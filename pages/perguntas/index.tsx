@@ -27,7 +27,7 @@ const index = () => {
         <title>Perguntas</title>
       </Head>
       <Header />
-      <main>
+      <main className="grow">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl m-5 text-teal-500 font-bold">Perguntas</h1>
           <Link href={'/perguntas/nova'}>

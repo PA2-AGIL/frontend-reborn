@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import router from 'next/router';
 import React from 'react';
 import { Input } from '../components/form';
@@ -86,12 +87,11 @@ const Entrar = () => {
               >
                 Entrar
               </button>
-              <a
-                className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600"
-                href="#"
-              >
-                Esqueceu a senha?
-              </a>
+              <Link href="/esqueci">
+                <a className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600">
+                  Esqueceu a senha?
+                </a>
+              </Link>
             </div>
           </form>
         </div>
