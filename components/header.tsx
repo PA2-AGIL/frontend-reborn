@@ -1,5 +1,4 @@
 import React from 'react';
-import { AdjustmentsIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { UserContext } from '../context/userContext';
 import Image from 'next/image';
@@ -11,8 +10,8 @@ const Header = () => {
     <nav className="flex items-center justify-between flex-wrap p-5 mx-10">
       <div>
         <Link href={accessToken ? '/perguntas' : '/'}>
-          <a className="flex items-center text-black font-bold">
-            <h2 className="text-4xl" >Ágil </h2>
+          <a className="flex items-center text-black">
+            <h2 className="text-4xl">Ágil</h2>
             <Image
               src="/leaf.svg"
               width={50}
