@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import router from 'next/router';
 import React from 'react';
-import { Input } from '../components/form';
+import { Input, Toggle } from '../components/form';
 import Header from '../components/header';
 import { UserContext } from '../context/userContext';
 import { public_api } from './api/axios';
@@ -14,6 +14,7 @@ const Entrar = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState<any>({});
+  const [expert, setExpert] = React.useState(false);
 
   const checkError = () => {
     let errs: any = {};
@@ -34,10 +35,14 @@ const Entrar = () => {
     }
     try {
       setLoading(true);
-      const { data } = await public_api.post('/auth/signin/producer', {
-        email,
-        password,
-      });
+
+      const { data } = await public_api.post(
+        `/auth/signin/${expert ? 'expert' : 'producer'}`,
+        {
+          email,
+          password,
+        }
+      );
       const { accessToken } = data;
 
       localStorage.setItem('accessToken', accessToken);
@@ -80,6 +85,14 @@ const Entrar = () => {
               error={errors.password}
             />
 
+            <div className="flex items-end justify-end">
+              <Link href="/esqueci">
+                <a className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600 mb-5">
+                  Esqueceu a senha?
+                </a>
+              </Link>
+            </div>
+
             <div className="flex items-center justify-between">
               <button
                 className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -87,11 +100,12 @@ const Entrar = () => {
               >
                 Entrar
               </button>
-              <Link href="/esqueci">
-                <a className="inline-block align-baseline font-bold text-sm text-teal-500 hover:text-teal-600">
-                  Esqueceu a senha?
-                </a>
-              </Link>
+              <Toggle
+                id="expertToggle"
+                value={expert}
+                setValue={setExpert}
+                name="Especialista"
+              />
             </div>
           </form>
         </div>

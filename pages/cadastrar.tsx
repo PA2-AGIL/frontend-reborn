@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Router from 'next/router';
 import React from 'react';
-import { Input } from '../components/form';
+import { Input, Toggle } from '../components/form';
 import Header from '../components/header';
 import { public_api } from './api/axios';
 
@@ -14,6 +14,8 @@ const Cadastrar = () => {
   const [password2, setPassword2] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [address, setAddress] = React.useState('');
+  const [type, setType] = React.useState('AQUICULTOR');
+  const [expert, setExpert] = React.useState(true);
 
   const [errors, setErrors] = React.useState<any>({});
 
@@ -46,16 +48,24 @@ const Cadastrar = () => {
     try {
       setLoading(false);
 
-      const { data } = await public_api.post('/auth/signup/producer', {
-        name,
-        email,
-        password,
-        phone,
-        address,
-      });
-
-      console.log(data);
-
+      if (expert) {
+        await public_api.post('/auth/signup/expert', {
+          name,
+          email,
+          password,
+          phone,
+          address,
+          type,
+        });
+      } else {
+        await public_api.post('/auth/signup/producer', {
+          name,
+          email,
+          password,
+          phone,
+          address,
+        });
+      }
       Router.push('/entrar');
     } catch (error: any) {
       console.log(error.response.data.message);
@@ -123,13 +133,68 @@ const Cadastrar = () => {
               error={errors.address}
             />
 
+            {expert && (
+              <>
+                <label
+                  className="block text-sm font-bold mb-2 text-teal-500"
+                  htmlFor="email"
+                >
+                  Tipo
+                </label>
+                <select
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  className="
+                appearance-none
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-500
+                bg-white
+                bg-clip-padding
+                bg-no-repeat
+                border border-solid
+                border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                mb-3
+                focus:text-teal-700
+                focus:bg-white
+                focus:border-teal-500
+                focus:outline-none"
+                >
+                  <option>AQUICULTOR</option>
+                  <option>APICULTOR</option>
+                  <option>AVICULTOR</option>
+                  <option>AGRONOMO</option>
+                  <option>ENGENHEIRO FLORESTAL</option>
+                  <option>PECUARISTA</option>
+                  <option>VETERINÁRIO</option>
+                  <option>ZOOTÉCNICO</option>
+                </select>
+              </>
+            )}
+
             <div className="flex items-center justify-between">
               <button
                 className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
+                disabled={loading}
               >
                 Cadastrar
               </button>
+
+              <Toggle
+                id="expertToggle"
+                value={expert}
+                setValue={setExpert}
+                name="Especialista"
+              />
             </div>
           </form>
         </div>

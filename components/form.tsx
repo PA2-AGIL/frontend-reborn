@@ -1,5 +1,29 @@
 import React from 'react';
 
+export const Toggle: React.FC<{
+  id: string;
+  name: string;
+  value: boolean;
+  setValue: (e: any) => any;
+}> = ({ id, name, value, setValue }) => {
+  return (
+    <label htmlFor={id} className="flex items-center cursor-pointer">
+      <div className="ml-3 text-teal-500 font-semibold mr-2">{name}</div>
+      <div className="relative">
+        <input
+          type="checkbox"
+          id={id}
+          className="sr-only"
+          checked={value}
+          onChange={() => setValue(!value)}
+        />
+        <div className="block bg-teal-500 w-14 h-8 rounded-full"></div>
+        <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+      </div>
+    </label>
+  );
+};
+
 export const Input: React.FC<{
   name: string;
   type?: string;
