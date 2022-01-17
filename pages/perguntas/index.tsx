@@ -8,12 +8,12 @@ import { private_api } from '../api/axios';
 
 const index = () => {
   const [questions, setQuestions] = React.useState([]);
+  const [query, setQuery] = React.useState('');
 
   React.useEffect(() => {
     (async () => {
       try {
         const { data } = await private_api.get('/question/all');
-        console.log(data);
         setQuestions(data.data);
       } catch (error) {
         console.log(error);
@@ -21,15 +21,35 @@ const index = () => {
     })();
   }, []);
 
+  React.useEffect(() => {
+    const timer = setTimeout(async () => {
+      const { data } = await private_api.get(`/question/all?query=${query}`);
+      setQuestions(data.data);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   return (
     <div className="h-screen flex flex-col justify-between">
       <Head>
         <title>Perguntas</title>
       </Head>
       <Header />
-      <main className="grow">
+      <main className="grow w-full flex flex-col">
+        <input
+          placeholder="Buscar"
+          className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline md:hidden justify-center m-5 mb-2"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <div className="flex justify-between items-center">
           <h1 className="text-2xl m-5 text-teal-500 font-bold">Perguntas</h1>
+          <input
+            placeholder="Buscar"
+            className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hidden md:block"
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <Link href={'/perguntas/nova'}>
             <h1 className="text-md font-semibold my-3 mx-5 py-2 px-5 border rounded bg-teal-500 text-white hover:cursor-pointer">
               Nova Pergunta
