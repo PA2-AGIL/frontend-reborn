@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import Router from 'next/router';
 import React from 'react';
 import { Input } from '../components/form';
 import Header from '../components/header';
+import { UserContext } from '../context/userContext';
 import { public_api } from './api/axios';
 
 const Cadastrar = () => {
@@ -16,6 +18,8 @@ const Cadastrar = () => {
   const [address, setAddress] = React.useState('');
 
   const [errors, setErrors] = React.useState<any>({});
+
+  const { accessToken, logout } = React.useContext(UserContext);
 
   const checkError = () => {
     let errs: any = {};
@@ -65,85 +69,95 @@ const Cadastrar = () => {
   };
 
   return (
-    <>
+    <div className="w-full h-screen bg-primary-lighteen">
       <Head>
         <title>Cadastrar Produtor</title>
       </Head>
-      <Header />
-      <div className="flex justify-around">
-        <div className="w-full max-w-lg">
-          <form
-            className="px-8 pt-6 pb-8 mb-4 mt-10"
-            onSubmit={(e: React.FormEvent) => {
-              handleRegister(e);
-            }}
-          >
-            <Input
-              value={name}
-              setValue={setName}
-              name="Nome"
-              placeholder="seu nome e sobrenome"
-              error={errors.name}
-            />
-            <Input
-              value={email}
-              setValue={setEmail}
-              name="Email"
-              placeholder="teste@teste.com"
-              error={errors.email}
-            />
-            <Input
-              value={password}
-              setValue={setPassword}
-              name="Senha"
-              type="password"
-              placeholder="********"
-              error={errors.password}
-            />
-            <Input
-              value={password2}
-              setValue={setPassword2}
-              name="Confirmar Senha"
-              type="password"
-              placeholder="********"
-              error={errors.password2}
-            />
-            <Input
-              value={phone}
-              setValue={setPhone}
-              name="Telefone"
-              placeholder="(84) 9.0000-0000"
-              error={errors.phone}
-            />
-            <Input
-              value={address}
-              setValue={setAddress}
-              name="Endereço"
-              placeholder="rua dos tolos numero 0"
-              error={errors.address}
-            />
+      <div className="container mx-auto">
+        <div className="flex justify-around">
+          <div className="w-full max-w-3xl">
+            <Link href={accessToken ? '/perguntas' : '/'}>
+              <a className="flex items-center text-black my-5">
+                <h2 className="text-4xl">Ágil</h2>
+                <Image
+                  src="/leaf.svg"
+                  width={50}
+                  height={50}
+                  objectFit="contain"
+                />
+              </a>
+            </Link>
+            <h2 className="text-black text-3xl my-8">Cadastro</h2>
+            <form
+              className=""
+              onSubmit={(e: React.FormEvent) => {
+                handleRegister(e);
+              }}
+            >
+              <Input
+                value={name}
+                setValue={setName}
+                name="Nome"
+                placeholder="Nome completo"
+                error={errors.name}
+                color='black'
+              />
+              <Input
+                value={email}
+                setValue={setEmail}
+                name="Email"
+                placeholder="Exemplo: exemplo@email.com"
+                error={errors.email}
+                color='black'
+              />
+              <Input
+                value={password}
+                setValue={setPassword}
+                name="Senha"
+                type="password"
+                placeholder="Sua senha"
+                error={errors.password}
+                color='black'
+              />
+              <Input
+                value={password2}
+                setValue={setPassword2}
+                name="Confirmar Senha"
+                type="password"
+                placeholder="Repita sua senha"
+                error={errors.password2}
+                color='black'
+              />
+              <Input
+                value={phone}
+                setValue={setPhone}
+                name="Telefone"
+                placeholder="(84) 9.0000-0000"
+                error={errors.phone}
+                color='black'
+              />
+              <Input
+                value={address}
+                setValue={setAddress}
+                name="Endereço"
+                placeholder="Exemplo: Avenida Brasil, Número 15"
+                error={errors.address}
+                color='black'
+              />
 
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
-                Cadastrar
-              </button>
-            </div>
-          </form>
-        </div>
-        <div className="w-full max-w-lg hidden md:block">
-          <Image
-            src="/register.svg"
-            width="100%"
-            height="100%"
-            layout="responsive"
-            objectFit="contain"
-          />
+              <div className="flex justify-end items-end flex-col">
+                <button
+                  className="bg-secondary hover:bg-secondary-dark w-52 text-white text-lg font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+                  type="submit"
+                >
+                  Cadastrar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
