@@ -3,32 +3,32 @@ import Link from 'next/link';
 import React from 'react';
 import Footer from '../../components/footer';
 import Header from '../../components/header';
+import PageCounter from '../../components/pageCounter';
 import QuestionCard from '../../components/questionCard';
 import { private_api } from '../api/axios';
 
 const index = () => {
   const [questions, setQuestions] = React.useState([]);
   const [query, setQuery] = React.useState('');
-
-  React.useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await private_api.get('/question/all');
-        setQuestions(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  const [page, setPage] = React.useState(1);
+  const [maxPages] = React.useState(1);
 
   React.useEffect(() => {
     const timer = setTimeout(async () => {
-      const { data } = await private_api.get(`/question/all?query=${query}`);
-      setQuestions(data.data);
+      if (query) {
+        const { data } = await private_api.get(`/question/all?query=${query}`);
+        setQuestions(data.data);
+      } else {
+        const { data } = await private_api.get(
+          `/question/all?limit=${maxPages}&page=${page}`
+        );
+        console.log(data);
+        setQuestions(data.data);
+      }
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, page]);
 
   return (
     <div className="h-screen flex flex-col justify-between">
@@ -83,6 +83,7 @@ const index = () => {
             }
           )}
         </div>
+        <PageCounter pageNum={page} setPage={setPage} />
       </main>
       <Footer />
     </div>
