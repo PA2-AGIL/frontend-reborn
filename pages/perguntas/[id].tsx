@@ -145,13 +145,17 @@ const PerguntaId = () => {
               </h2>
 
               {question.answers.map(
-                ({ _id, content, owner, createdAt }: IAns) => {
+                ({ _id, content, owner, createdAt, likes, dislike }: IAns) => {
                   return (
                     <AnswerCard
+                      id={_id}
                       key={_id}
                       title={owner.name}
                       description={content}
                       date={createdAt}
+                      rate={likes - dislike}
+                      reload={reload}
+                      setReload={setReload}
                     />
                   );
                 }
@@ -193,6 +197,8 @@ interface IAns {
   _id: string;
   content: string;
   createdAt: string;
+  likes: number;
+  dislike: number;
   owner: {
     name: string;
   };
