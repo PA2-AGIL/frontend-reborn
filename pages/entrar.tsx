@@ -16,6 +16,8 @@ const Entrar = () => {
   const [errors, setErrors] = React.useState<any>({});
   const [expert, setExpert] = React.useState(false);
 
+  const [apiError, setApiError] = React.useState('');
+
   const checkError = () => {
     let errs: any = {};
 
@@ -34,6 +36,7 @@ const Entrar = () => {
       return;
     }
     try {
+      setApiError('');
       setLoading(true);
 
       const { data } = await public_api.post(
@@ -48,8 +51,9 @@ const Entrar = () => {
       localStorage.setItem('accessToken', accessToken);
       login!(accessToken);
       router.push('/perguntas');
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      setApiError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -69,6 +73,11 @@ const Entrar = () => {
               handleLogin(e);
             }}
           >
+            {apiError && (
+              <div className="bg-rose-500 mb-3 rounded p-3 text-white">
+                {apiError}
+              </div>
+            )}
             <Input
               name="Email"
               placeholder="teste@teste.com"
@@ -97,6 +106,7 @@ const Entrar = () => {
               <button
                 className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
+                disabled={loading}
               >
                 Entrar
               </button>

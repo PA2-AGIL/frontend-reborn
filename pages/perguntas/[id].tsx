@@ -7,11 +7,13 @@ import AnswerCard from '../../components/answerCard';
 import Footer from '../../components/footer';
 import { Input } from '../../components/form';
 import Header from '../../components/header';
+import { UserContext } from '../../context/userContext';
 import { private_api } from '../api/axios';
 
 const PerguntaId = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { accessToken } = React.useContext(UserContext);
   const [loading, setLoading] = React.useState(false);
   const [reload, setReload] = React.useState(false);
   const [question, setQuestion] = React.useState<any>({});
@@ -76,7 +78,7 @@ const PerguntaId = () => {
       </Head>
       <Header />
 
-      <main className="container m-auto">
+      <main className="container m-auto grow">
         <div className="p-5">
           <h1 className="text-2xl mb-5 text-teal-900">{question.title}</h1>
           <div className="flex mb-5">
@@ -157,24 +159,28 @@ const PerguntaId = () => {
             </div>
           )}
 
-          <Input
-            name="Sua resposta"
-            placeholder="Resposta"
-            type="textarea"
-            value={answer}
-            setValue={setAnswer}
-          />
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="button"
-              onClick={() => {
-                respond();
-              }}
-            >
-              Responder
-            </button>
-          </div>
+          {!question.closed && !!accessToken && (
+            <>
+              <Input
+                name="Sua resposta"
+                placeholder="Resposta"
+                type="textarea"
+                value={answer}
+                setValue={setAnswer}
+              />
+              <div className="flex items-center justify-between">
+                <button
+                  className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  type="button"
+                  onClick={() => {
+                    respond();
+                  }}
+                >
+                  Responder
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </main>
 

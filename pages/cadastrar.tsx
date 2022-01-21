@@ -15,7 +15,9 @@ const Cadastrar = () => {
   const [phone, setPhone] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [type, setType] = React.useState('AQUICULTOR');
-  const [expert, setExpert] = React.useState(true);
+  const [expert, setExpert] = React.useState(false);
+
+  const [apiError, setApiError] = React.useState('');
 
   const [errors, setErrors] = React.useState<any>({});
 
@@ -47,6 +49,7 @@ const Cadastrar = () => {
 
     try {
       setLoading(false);
+      setApiError('');
 
       if (expert) {
         await public_api.post('/auth/signup/expert', {
@@ -68,7 +71,8 @@ const Cadastrar = () => {
       }
       Router.push('/entrar');
     } catch (error: any) {
-      console.log(error.response.data.message);
+      console.log(error);
+      setApiError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -77,7 +81,7 @@ const Cadastrar = () => {
   return (
     <>
       <Head>
-        <title>Cadastrar Produtor</title>
+        <title>Cadastrar {expert ? 'Especialista' : 'Produtor'}</title>
       </Head>
       <Header />
       <div className="flex justify-around">
@@ -88,6 +92,11 @@ const Cadastrar = () => {
               handleRegister(e);
             }}
           >
+            {apiError && (
+              <div className="bg-rose-500 mb-3 rounded p-3 text-white">
+                {apiError}
+              </div>
+            )}
             <Input
               value={name}
               setValue={setName}

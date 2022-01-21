@@ -5,9 +5,11 @@ import Footer from '../../components/footer';
 import Header from '../../components/header';
 import PageCounter from '../../components/pageCounter';
 import QuestionCard from '../../components/questionCard';
+import { UserContext } from '../../context/userContext';
 import { private_api } from '../api/axios';
 
 const index = () => {
+  const { accessToken } = React.useContext(UserContext);
   const [questions, setQuestions] = React.useState([]);
   const [query, setQuery] = React.useState('');
   const [page, setPage] = React.useState(1);
@@ -50,7 +52,7 @@ const index = () => {
             className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hidden md:block"
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Link href={'/perguntas/nova'}>
+          <Link href={accessToken ? '/perguntas/nova' : '/entrar'}>
             <h1 className="text-md font-semibold my-3 mx-5 py-2 px-5 border rounded bg-teal-500 text-white hover:cursor-pointer">
               Nova Pergunta
             </h1>
