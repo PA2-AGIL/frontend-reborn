@@ -9,11 +9,11 @@ import { UserContext } from '../../context/userContext';
 import { private_api } from '../api/axios';
 
 const index = () => {
-  const { accessToken } = React.useContext(UserContext);
+  const { accessToken, type } = React.useContext(UserContext);
   const [questions, setQuestions] = React.useState([]);
   const [query, setQuery] = React.useState('');
   const [page, setPage] = React.useState(1);
-  const [maxPages] = React.useState(1);
+  const [maxPages] = React.useState(4);
 
   React.useEffect(() => {
     const timer = setTimeout(async () => {
@@ -22,7 +22,9 @@ const index = () => {
         setQuestions(data.data);
       } else {
         const { data } = await private_api.get(
-          `/question/all?limit=${maxPages}&page=${page}`
+          `/question/all?limit=${maxPages}&page=${page}${
+            type ? `&query=${type}` : ''
+          }`
         );
         console.log(data);
         setQuestions(data.data);
