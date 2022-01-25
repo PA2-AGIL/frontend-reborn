@@ -17,7 +17,11 @@ export const Toggle: React.FC<{
           checked={value}
           onChange={() => setValue(!value)}
         />
-        <div className="block bg-teal-500 w-14 h-8 rounded-full"></div>
+        <div
+          className={`block ${
+            value ? 'bg-teal-500' : 'bg-gray-500'
+          } w-14 h-8 rounded-full`}
+        ></div>
         <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
       </div>
     </label>
