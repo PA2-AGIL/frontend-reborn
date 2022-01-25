@@ -50,7 +50,7 @@ const Entrar = () => {
 
       localStorage.setItem('accessToken', accessToken);
       login!(accessToken);
-      router.push('/perguntas');
+      window.location.href = '/perguntas';
     } catch (error: any) {
       console.log(error);
       setApiError(error.response.data.message);
