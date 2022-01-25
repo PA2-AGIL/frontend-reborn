@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 import React from 'react';
 import { Input, Toggle } from '../components/form';
+import InputMask from 'react-input-mask';
 import Header from '../components/header';
 import { public_api } from './api/axios';
 
@@ -127,13 +128,25 @@ const Cadastrar = () => {
               placeholder="********"
               error={errors.password2}
             />
-            <Input
-              value={phone}
-              setValue={setPhone}
-              name="Telefone"
-              placeholder="(84) 9.0000-0000"
-              error={errors.phone}
-            />
+
+            <div className="mb-4">
+              <label
+                className="block text-sm font-bold mb-2 text-teal-500"
+                htmlFor="email"
+              >
+                Telefone
+              </label>
+              <InputMask
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.phone && 'border-red-500'
+                }`}
+                mask="(99) 99999-9999"
+                id="phone"
+                placeholder="(00) 9.0000-0000"
+                value={phone}
+                onChange={(e: any) => setPhone(e.target.value)}
+              />
+            </div>
             <Input
               value={address}
               setValue={setAddress}
