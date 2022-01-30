@@ -1,4 +1,9 @@
-import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/solid';
+import {
+  ThumbDownIcon,
+  ThumbUpIcon,
+  LockOpenIcon,
+  LockClosedIcon,
+} from '@heroicons/react/solid';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,7 +11,7 @@ import React from 'react';
 import AnswerCard from '../../components/answerCard';
 import Footer from '../../components/footer';
 import { Input } from '../../components/form';
-import Header from '../../components/header';
+import Header, { parseJwt } from '../../components/header';
 import { UserContext } from '../../context/userContext';
 import { private_api } from '../api/axios';
 
@@ -18,6 +23,7 @@ const PerguntaId = () => {
   const [reload, setReload] = React.useState(false);
   const [question, setQuestion] = React.useState<any>({});
   const [answer, setAnswer] = React.useState<string>('');
+  const [modal, setModal] = React.useState(false);
 
   const respond = async () => {
     try {
@@ -32,6 +38,18 @@ const PerguntaId = () => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const close = async () => {
+    try {
+      const { data } = await private_api.patch(`/question/close/${id}`);
+      if (!!data) {
+        setReload(!reload);
+        setModal(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -78,9 +96,65 @@ const PerguntaId = () => {
       </Head>
       <Header />
 
+      {modal ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-3">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-2xl text-teal-800 font-semibold">
+                    Confirmar
+                  </h3>
+                </div>
+                <div className="relative px-5 py-2 flex-auto">
+                  <p className="my-2 text-teal-700 text-lg leading-relaxed">
+                    Você está prestes a fechar esta pergunta, uma ação que não
+                    pode ser desfeita, ao fechar novas respostas nao poderao ser
+                    enviadas, deseja continuar?
+                  </p>
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    className="text-rose-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setModal(false)}
+                  >
+                    Não
+                  </button>
+                  <button
+                    className="bg-teal-500 text-white active:bg-teal-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => close()}
+                  >
+                    Sim
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
+
       <main className="container m-auto grow">
         <div className="p-5">
-          <h1 className="text-2xl mb-5 text-teal-900">{question.title}</h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl mb-5 text-teal-900">{question.title}</h1>
+            <div className="pr-4">
+              {question.closed ? (
+                <LockClosedIcon className="w-10 text-teal-800" />
+              ) : (
+                <LockOpenIcon
+                  className="w-10 hover:cursor-pointer text-teal-800"
+                  onClick={() => {
+                    if (question.producer._id === parseJwt(accessToken!).id)
+                      setModal(true);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
           <div className="flex mb-5">
             <div className="text-center">
               <ThumbUpIcon
@@ -179,6 +253,7 @@ const PerguntaId = () => {
                 <button
                   className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="button"
+                  disabled={loading}
                   onClick={() => {
                     respond();
                   }}
