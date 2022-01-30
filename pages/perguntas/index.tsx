@@ -14,11 +14,15 @@ const index = () => {
   const [query, setQuery] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [maxPages] = React.useState(4);
+  const [pages, setPages] = React.useState(0);
 
   React.useEffect(() => {
     const timer = setTimeout(async () => {
       if (query) {
-        const { data } = await private_api.get(`/question/all?query=${query}`);
+        const { data } = await private_api.get(
+          `/question/all?query=${query}&limit=${maxPages}`
+        );
+        setPages(data.totalPages);
         setQuestions(data.data);
       } else {
         const { data } = await private_api.get(
@@ -26,7 +30,7 @@ const index = () => {
             type ? `&query=${type}` : ''
           }`
         );
-        console.log(data);
+        setPages(data.totalPages);
         setQuestions(data.data);
       }
     }, 200);
@@ -89,7 +93,7 @@ const index = () => {
             }
           )}
         </div>
-        <PageCounter pageNum={page} setPage={setPage} />
+        <PageCounter pageNum={page} setPage={setPage} disable={page >= pages} />
       </main>
       <Footer />
     </div>
