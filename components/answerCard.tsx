@@ -8,9 +8,19 @@ const AnswerCard: React.FC<{
   description: string;
   date: string;
   rate?: number;
+  expert?: boolean;
   reload?: boolean;
   setReload?: (a: any) => any;
-}> = ({ id, title, description, date, rate = 0, reload, setReload }) => {
+}> = ({
+  id,
+  title,
+  description,
+  date,
+  rate = 0,
+  expert,
+  reload,
+  setReload,
+}) => {
   const [rateToBtns, setRateToBtns] = useState(0);
 
   const ansLike = async (id: string) => {
@@ -40,7 +50,11 @@ const AnswerCard: React.FC<{
   };
 
   return (
-    <div className="shadow border rounded p-2 flex my-5 text-teal-500">
+    <div
+      className={`shadow border rounded p-2 flex my-5 text-teal-500 ${
+        expert && 'border-l-8 border-l-teal-500'
+      }`}
+    >
       <div className="text-center p-3">
         <ThumbUpIcon
           className={`w-10

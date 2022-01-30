@@ -154,6 +154,9 @@ const PerguntaId = () => {
                       description={content}
                       date={createdAt}
                       rate={likes - dislike}
+                      expert={
+                        owner.hasExpert && question?.tags.includes(owner.type)
+                      }
                       reload={reload}
                       setReload={setReload}
                     />
@@ -201,6 +204,8 @@ interface IAns {
   dislike: number;
   owner: {
     name: string;
+    hasExpert: boolean;
+    type: string;
   };
 }
 
