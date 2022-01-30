@@ -12,6 +12,7 @@ import AnswerCard from '../../components/answerCard';
 import Footer from '../../components/footer';
 import { Input } from '../../components/form';
 import Header, { parseJwt } from '../../components/header';
+import PageCounter from '../../components/pageCounter';
 import { UserContext } from '../../context/userContext';
 import { private_api } from '../api/axios';
 
@@ -22,8 +23,11 @@ const PerguntaId = () => {
   const [loading, setLoading] = React.useState(false);
   const [reload, setReload] = React.useState(false);
   const [question, setQuestion] = React.useState<any>({});
+  const [pageAns, setPageAns] = React.useState<any>([]);
   const [answer, setAnswer] = React.useState<string>('');
   const [modal, setModal] = React.useState(false);
+  const [maxPage] = React.useState(5);
+  const [page, setPage] = React.useState(1);
 
   const respond = async () => {
     try {
@@ -76,12 +80,19 @@ const PerguntaId = () => {
   };
 
   React.useEffect(() => {
+    if (!!question.answers?.length) {
+      const allAns = [...question.answers];
+
+      setPageAns(allAns.slice((page - 1) * maxPage, page * maxPage));
+    }
+  }, [question, page]);
+
+  React.useEffect(() => {
     if (!id) return;
 
     (async () => {
       try {
         const { data } = await private_api.get(`/question/${id}`);
-        console.log(data);
         setQuestion(data);
       } catch (error) {
         console.log(error);
@@ -217,8 +228,7 @@ const PerguntaId = () => {
                 {question.answers.length} Resposta
                 {!!question.answers.length && `s`}
               </h2>
-
-              {question.answers.map(
+              {pageAns?.map(
                 ({ _id, content, owner, createdAt, likes, dislike }: IAns) => {
                   return (
                     <AnswerCard
@@ -237,6 +247,11 @@ const PerguntaId = () => {
                   );
                 }
               )}
+              <PageCounter
+                disable={page >= Math.ceil(question.answers?.length / maxPage)}
+                pageNum={page}
+                setPage={setPage}
+              />
             </div>
           )}
 
