@@ -71,6 +71,7 @@ const index = () => {
               tags,
               createdAt,
               answers,
+              closed,
             }: IQuestion) => {
               return (
                 <QuestionCard
@@ -82,6 +83,7 @@ const index = () => {
                   tags={tags}
                   date={createdAt}
                   answers={answers.length}
+                  closed={closed}
                 />
               );
             }

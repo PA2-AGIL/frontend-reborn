@@ -9,10 +9,24 @@ const QuestionCard: React.FC<{
   answers?: number;
   tags: string[];
   date: string;
-}> = ({ id, title, description, rate = 0, answers = 0, tags, date }) => {
+  closed: boolean;
+}> = ({
+  id,
+  title,
+  description,
+  rate = 0,
+  answers = 0,
+  tags,
+  date,
+  closed,
+}) => {
   return (
     <Link href={`perguntas/${id}`}>
-      <div className="shadow border rounded p-2 flex m-5 text-teal-500 hover:cursor-pointer">
+      <div
+        className={`shadow border rounded p-2 flex m-5 text-teal-500 hover:cursor-pointer border-l-8 ${
+          closed ? 'border-l-rose-500' : 'border-l-teal-500'
+        }`}
+      >
         <div className="text-center p-2">
           <div>
             <p>{rate}</p>
